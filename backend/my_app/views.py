@@ -33,19 +33,21 @@ def status_check(request, job_id):
 def job_complete_hook(request):
     data = request.data
     job_id = data.get('job_id')
-    status = data.get('status')
     compressed_url = data.get('compressed_url')
-    if not job_id or not status:
-        return Response({"error": "Missing job_id or status"}, status=400)
+    if not job_id:
+        return Response({"error": "Missing job_id"}, status=400)
     try:
-        job = Job.objects.get(job_id=job_id)
+        job = Job.objects.get(id=job_id)
     except Job.DoesNotExist:
         return Response({"error": "Job not found"}, status=404)
     
-    job.status = status
-    if compressed_url:
-        job.compressed_url = compressed_url
+    job.status = 'D'
+    if not compressed_url:
+        return Response({"error": "Missing compressed_url"}, status=400)
+    job.compressed_url = compressed_url
     job.save()
+
+    print(f"Webhook received for job_id={job_id}, compressed_url={compressed_url}")
 
     send_email.delay(
         subject='Your image has been compressed!',
@@ -55,4 +57,4 @@ def job_complete_hook(request):
         fail_silently=True
     )
 
-    return Response({"message": "Job status updated successfully"}, status=200)
+    return Response({"message": "Job processed successfully"}, status=200)
