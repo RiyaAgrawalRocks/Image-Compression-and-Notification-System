@@ -1,6 +1,6 @@
 from .models import *
 from celery import shared_task
-import os
+import os, requests
 from django.conf import settings
 from PIL import Image
 
@@ -21,11 +21,9 @@ def compress(job_id):
 
         with Image.open(input_path) as img:
             img.save(output_path, optimize=True, quality=50)
-
-        job.compressed_image=f'compressed/{filename}'
-        job.status='D'
-        job.save()
-        return f"Compression done for job {job_id}"
+        print(f"Compressed url is here: {job.compressed_url}")
+        requests.post('http://127.0.0.1:8000/internal/hooks/job-complete', json={'job_id': job_id, 'compressed_url':f'compressed/{filename}'})
+        return job.id
     except Exception as e:
         print(f"Compression failed for job {job_id}: {e}")
         return f"Error: {e}"
