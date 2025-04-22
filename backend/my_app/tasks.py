@@ -33,3 +33,6 @@ def store(compressed_img):
 def post_request(job):
     return
 
+@shared_task
+def send_email(job):
+    return
