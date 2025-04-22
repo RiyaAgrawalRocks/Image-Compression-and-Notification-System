@@ -24,7 +24,7 @@ def upload(request):
 def status_check(request, job_id):
     try:
         job=Job.objects.get(id=job_id)
-        return Response({"job id": str(job_id), "status": job.status})
+        return Response({"job id": str(job_id), "status": job.status, "compressed_url": job.compressed_url})
     except Job.DoesNotExist:
         return Response({"error":"Job Not Found"}, status=400)
 

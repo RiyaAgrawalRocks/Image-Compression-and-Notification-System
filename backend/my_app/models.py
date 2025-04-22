@@ -7,4 +7,4 @@ class Job(models.Model):
     image = models.ImageField(upload_to="originals/")
     email = models.EmailField(null=False, blank=False, editable=True)
     status = models.CharField(max_length=20, choices=choices, default='P', editable=False)
-    compressed_url=models.EmailField(editable=True, null=False, default='Email@email.com')
+    compressed_url=models.CharField(max_length=255, editable=True, null=True, blank=True)

@@ -22,8 +22,9 @@ def compress(job_id):
         with Image.open(input_path) as img:
             img.save(output_path, optimize=True, quality=50)
 
-        job.compressed_image=f'compressed/{filename}'
+        job.compressed_url=f'compressed/{filename}'
         job.status='D'
+        print(f"Compressed url is here: {job.compressed_url}")
         job.save()
         return f"Compression done for job {job_id}"
     except Exception as e:
