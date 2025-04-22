@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'celery',
     'my_app',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +80,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": env.db("DATABASE_URL")
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -125,8 +128,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-
-CELERY_TIMEZONE = 'UTC'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
