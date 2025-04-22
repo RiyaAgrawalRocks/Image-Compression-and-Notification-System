@@ -9,8 +9,7 @@ class JobSerializer(serializers.ModelSerializer):
             'image',
             'compressed_url',
             'email',
-            'status',
-            'created_at'
+            'status'
         ]
         read_only_fields = ['id', 'status']
         
