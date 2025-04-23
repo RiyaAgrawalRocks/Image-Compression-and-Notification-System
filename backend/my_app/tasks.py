@@ -1,7 +1,9 @@
 from .models import *
 from celery import shared_task
-import os, requests
+import os, requests, uuid
 from django.conf import settings
+from django.core.files.storage import default_storage
+from .supabase_client import supabase
 from PIL import Image
 
 @shared_task
